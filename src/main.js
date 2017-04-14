@@ -4,11 +4,13 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
+import Router from 'vue-router'
 
 import '../static/css/common.css'                 // 引入共用样式
 import 'element-ui/lib/theme-default/index.css'   // 引入elementUI样式
 
 Vue.use(ElementUI)
+Vue.use(Router)
 
 Vue.config.productionTip = false
 
