@@ -1,4 +1,4 @@
-<template>
+<template id="homeContent">
   <div>
     <div class="list-wrap">
       <div class="read-first">
@@ -9,7 +9,7 @@
         </div>
       </div>
       <ul class="list-content">
-        <li v-for="item in commodityItems">
+        <li v-for="item in commodityItems" @click="showDetail">
           <img src="static/images/list/phone.jpg" alt="">
           <div class="item-name">{{ item.name }}</div>
           <div class="item-info"><span>{{ item.owner.info }}</span><span>{{ item.owner.name }}</span></div>
@@ -98,6 +98,11 @@
             price: 2500
           }
         ]
+      }
+    },
+    methods: {
+      showDetail: function () {
+        this.$router.push({path: '/home/detail'})
       }
     }
   }

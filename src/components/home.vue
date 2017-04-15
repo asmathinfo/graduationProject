@@ -1,20 +1,18 @@
 <template>
   <div class="wrap">
     <homeNav></homeNav>
-    <list></list>
+    <router-view></router-view>
     <homeSlide class="slide"></homeSlide>
   </div>
 </template>
 
 <script>
   import homeNav from './nav.vue'
-  import list from './list.vue'
   import homeSlide from './slide.vue'
 
   export default {
     components: {
       homeNav,
-      list,
       homeSlide
     }
   }

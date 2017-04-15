@@ -46,32 +46,26 @@
     display: flex;
     flex-flow: row nowrap;
     background-color: white;
-
     li {
       float: left;
       display: inline-block;
     }
-
     .home-icon {
       height: 120px;
-
       img {
         height: 100%;
       }
-
     }
     .home-title {
       flex: 1;
       text-align: center;
       margin-top: 30px;
-
-      &:first-child {
+      p:first-child {
         color: rgb(100, 203, 279);
         font-size: 26px;
         margin-bottom: 5px;
       }
-
-      &:last-child {
+      p:last-child {
         color: rgb(255, 178, 0);
         font-size: 16px;
       }
@@ -79,14 +73,12 @@
     .hone-search {
       width: 640px;
       padding-top: 35px;
-
       .search-wrap {
         height: 50px;
         border: 1px solid #44C1A5;
         border-radius: 25px;
         color: #4BC0A5;
         overflow: hidden;
-
         .search-left {
           margin-right: 24%;
           height: 50px;
@@ -95,7 +87,6 @@
             margin: 12px 0 0 20px;
             float: left;
           }
-
           .search-input {
             padding: 10px;
             height: 100%;
@@ -108,7 +99,6 @@
               outline: none;
               font-size: 16px;
             }
-
           }
         }
         .search-right {
@@ -127,23 +117,19 @@
       flex: 1.5;
       text-indent: 10%;
       margin-top: 35px;
-
       .dropdown {
         height: 50px;
         cursor: pointer;
-
         .el-dropdown-link {
           overflow: hidden;
           height: 50px;
           min-width: 170px;
         }
-
         img {
           width: 50px;
           height: 50px;
           border-radius: 25px;
         }
-
         span {
           height: 50px;
           display: inline-block;
@@ -152,7 +138,6 @@
           color: rgb(100, 203, 177);
           text-indent: 10px;
         }
-
       }
       .login-div {
         margin: 7px 0 0 20px;
