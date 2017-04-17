@@ -1,9 +1,9 @@
 <template>
   <div>
     <ul class="nav">
-      <li class="home-icon"><img src="static/images/nav/logo.png" alt="首页"></li>
+      <li class="home-icon" @click="turnHome"><img src="static/images/nav/logo.png" alt="首页"></li>
       <li class="home-title">
-        <div>
+        <div @click="turnHome">
           <p>校园共享</p>
           <p>享你所享，淘你钟意</p>
         </div>
@@ -52,6 +52,7 @@
     }
     .home-icon {
       height: 120px;
+      cursor: pointer;
       img {
         height: 100%;
       }
@@ -60,6 +61,7 @@
       flex: 1;
       text-align: center;
       margin-top: 30px;
+      cursor: pointer;
       p:first-child {
         color: rgb(100, 203, 279);
         font-size: 26px;
@@ -164,5 +166,11 @@
 </style>
 
 <script type="text/ecmascript-6">
-
+  export default {
+    methods: {
+      turnHome: function () {
+        this.$router.replace({ path: '/home' })
+      }
+    }
+  }
 </script>
