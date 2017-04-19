@@ -18,22 +18,15 @@
         </div>
       </li>
       <li class="home-person">
-        <!--<el-dropdown class="dropdown">-->
-          <!--<div class="el-dropdown-link">-->
-            <!--<img src="static/images/nav/100.png" alt="">-->
-            <!--<span>访客</span>-->
-          <!--</div>-->
-          <!--<el-dropdown-menu class="dropdown-menu">-->
-            <!--<el-dropdown-item class="dropdown-item">嗨，访客</el-dropdown-item>-->
-            <!--<el-dropdown-item class="dropdown-item">个人中心</el-dropdown-item>-->
-            <!--<el-dropdown-item class="dropdown-item">我的收藏</el-dropdown-item>-->
-            <!--<el-dropdown-item class="dropdown-item">退出登录</el-dropdown-item>-->
-          <!--</el-dropdown-menu>-->
-        <!--</el-dropdown>-->
-        <div class="login-div">
-          <router-link :to="{path: '/login'}" class="login-button">登录</router-link>
-          <router-link :to="{path: '/login'}" class="login-button">注册</router-link>
+        <div class="owner-div">
+          <img src="static/images/nav/100.png" alt="" @click="turnPerson">
+          <span @click="turnPerson">访客</span>
+          <router-link :to="{path: '/login'}" class="login-button">退出登录</router-link>
         </div>
+        <!--<div class="login-div">-->
+          <!--<router-link :to="{path: '/login'}" class="login-button">登录</router-link>-->
+          <!--<router-link :to="{path: '/login'}" class="login-button">注册</router-link>-->
+        <!--</div>-->
       </li>
     </ul>
   </div>
@@ -119,26 +112,40 @@
       flex: 1.5;
       text-indent: 10%;
       margin-top: 35px;
-      .dropdown {
-        height: 50px;
-        cursor: pointer;
-        .el-dropdown-link {
-          overflow: hidden;
-          height: 50px;
-          min-width: 170px;
-        }
+      .owner-div {
+        height: 52px;
+        margin-left: 20px;
         img {
-          width: 50px;
-          height: 50px;
-          border-radius: 25px;
+          height: 46px;
+          width: 46px;
+          padding: 2px;
+          border-radius: 26px;
+          border: 1px solid rgb(100, 203, 177);
+          cursor: pointer;
         }
         span {
-          height: 50px;
           display: inline-block;
-          line-height: 50px;
-          vertical-align: top;
-          color: rgb(100, 203, 177);
           text-indent: 10px;
+          color: rgb(100, 203, 177);
+          cursor: pointer;
+        }
+        .login-button {
+          border-radius: 18px;
+          display: inline-block;
+          text-decoration: none;
+          color: gray;
+          height: 36px;
+          line-height: 36px;
+          text-align: center;
+          width: 100px;
+          border: 1px solid white;
+          text-indent: 0;
+          margin-left: 30px;
+          &:hover {
+           border: 1px solid rgb(100, 203, 177);
+           color: rgb(100, 203, 177);
+           border-radius: 18px;
+          }
         }
       }
       .login-div {
@@ -170,6 +177,9 @@
     methods: {
       turnHome: function () {
         this.$router.replace({ path: '/home' })
+      },
+      turnPerson: function () {
+        this.$router.push({path: '/home/person'})
       }
     }
   }
