@@ -27,81 +27,18 @@
   export default {
     data () {
       return {
-        commodityItems: [
-          {
-            img: 'static/images/list/phone.jpg',
-            name: '欧派电动车',
-            owner: {
-              info: '通信13级',
-              name: '张三'
-            },
-            price: 2500
-          },
-          {
-            img: 'static/images/list/phone.jpg',
-            name: '欧派电动车',
-            owner: {
-              info: '通信13级',
-              name: '张三'
-            },
-            price: 2500
-          },
-          {
-            img: 'static/images/list/phone.jpg',
-            name: '欧派电动车',
-            owner: {
-              info: '通信13级',
-              name: '张三'
-            },
-            price: 2500
-          },
-          {
-            img: 'static/images/list/phone.jpg',
-            name: '欧派电动车',
-            owner: {
-              info: '通信13级',
-              name: '张三'
-            },
-            price: 2500
-          },
-          {
-            img: 'static/images/list/phone.jpg',
-            name: '欧派电动车',
-            owner: {
-              info: '通信13级',
-              name: '张三'
-            },
-            price: 2500
-          },
-          {
-            img: 'static/images/list/phone.jpg',
-            name: '欧派电动车',
-            owner: {
-              info: '通信13级',
-              name: '张三'
-            },
-            price: 2500
-          },
-          {
-            img: 'static/images/list/phone.jpg',
-            name: '欧派电动车',
-            owner: {
-              info: '通信13级',
-              name: '张三'
-            },
-            price: 25
-          },
-          {
-            img: 'static/images/list/phone.jpg',
-            name: '欧派电动车',
-            owner: {
-              info: '通信13级',
-              name: '张三'
-            },
-            price: 2500
-          }
-        ]
+        commodityItems: []
       }
+    },
+    mounted: function () {
+      this.$http.get('/api/list')
+        .then(res => {
+          console.dir(res.data)
+          this.commodityItems = res.data
+        })
+        .catch(function (res) {
+          console.log(res)
+        })
     },
     methods: {
       showDetail: function () {
@@ -178,6 +115,7 @@
         margin-bottom: 20px;
         background-color: white;
         position: relative;
+        cursor: pointer;
 
         img {
           width: 200px;
