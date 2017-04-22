@@ -14,7 +14,7 @@
         <li v-for="item in commodityItems" @click="showDetail">
           <img src="static/images/list/phone.jpg" alt="">
           <div class="item-name">{{ item.name }}</div>
-          <div class="item-info"><span>{{ item.owner.info }}</span><span>{{ item.owner.name }}</span></div>
+          <div class="item-info"><span>通信12级</span><span>{{ item.owner.name }}</span></div>
           <div class="item-price">¥ <span>{{ item.price }}</span></div>
         </li>
       </ul>

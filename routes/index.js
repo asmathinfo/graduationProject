@@ -3,6 +3,7 @@
  */
 const express = require('express');
 const router = express.Router();
+const Commodity = require('../models/commodity')
 
 // 获取二手商品
 router.get('/list', (req,res) => {
@@ -26,5 +27,34 @@ router.get('/list', (req,res) => {
       price: 40000
     }]);
 })
+
+// 获取二手商品
+//router.get('/list', (req, res) => {
+//  Commodity.find({})
+//           .sort({ updata_at: -1})
+//           .then(commoditys => {
+//             res.json(commoditys)
+//           })
+//           .catch(err => {
+//             res.json(err)
+//           })
+//})
+
+// 添加一件商品
+//router.post('/publish', (req, res) => {
+//  Commodity.create({
+//    name: '金立手机',
+//    poster: '张三',
+//    introdution: '完好无损',
+//    place: '西四',
+//    contact: 119
+//  }, (err, commodity) => {
+//    if (err) {
+//      res.json(err)
+//    } else {
+//      res.json(commodity)
+//    }
+//  })
+//})
 
 module.exports = router;

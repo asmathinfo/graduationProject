@@ -4,12 +4,13 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const index = require('./routes/index')
+const config = require('./config/db')
+const commodity = require('./models/commodity')
+
+mongoose.connect(config.mongodb)
+mongoose.Promise = global.Promise
 
 const app = express()
-
-//app.use('/', (req, res) => {
-//  res.json({name: '111', price: '3000'})
-//})
 
 app.use('/api', index)
 

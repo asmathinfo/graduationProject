@@ -148,6 +148,21 @@
           qq: ''
         }
       }
+    },
+    mounted: function () {
+      this.$http.post('/api/publish', {
+        name: '金立手机',
+        poster: '张三',
+        introdution: '完好无损',
+        place: '西四',
+        contact: 119
+      })
+      .then(res => {
+        console.log(res)
+      })
+      .catch(res => {
+        console.log('提交出错')
+      })
     }
   }
 </script>
