@@ -1,9 +1,12 @@
 /**
  * Created by Administrator on 2017/4/21.
  */
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+
 const Commodity = require('../models/commodity')
+const User = require('../models/user')
+
+const router = express.Router();
 
 // 获取二手商品
 router.get('/list', (req,res) => {
@@ -26,6 +29,34 @@ router.get('/list', (req,res) => {
       },
       price: 40000
     }]);
+})
+
+// 注册账号，state表示注册状态，1为注册成功，0为注册失败
+router.post('/loginUp', (req, res) => {
+  User.create(req.body, (err,user) => {
+    if (err) {
+      res.json({state: '0', tip: '注册失败，请稍后重试'})
+    } else {
+      res.json({state: '1', tip: '注册成功'})
+    }
+  })
+})
+
+//账号登录，state表示登录状态，1为登录成功，0为登录失败
+router.post('/loginIn', (req, res) => {
+  User.findOne({'email': req.body.email}, 'psw')
+    .then(user => {
+      console.log(user.psw)
+      console.log(req.body.psw)
+      if (user.psw === req.body.psw) {
+        res.json({state: '1', tip: '登录成功'})
+      } else {
+        res.json({state: '0', tip: '密码错误，请重新输入'})
+      }
+    })
+    .catch(err => {
+      res.json({state: '0', tip: '登录失败，请稍后重试'})
+    })
 })
 
 // 获取二手商品

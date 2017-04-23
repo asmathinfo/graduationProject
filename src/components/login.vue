@@ -4,13 +4,13 @@
     <div class="login-content">
       <div class="title"><span :class="{ select : isLoginIn }" @click="loginInShow">登录</span> · <span :class="{ select : isLoginUp }" @click="loginUpShow">注册</span></div>
       <form class="loginIn-form" v-if="isLoginIn" :model="loginInForm" ref="loginInForm">
-        <el-input placeholder="邮箱" class="form-item" type="text" @blur="nameCheck" v-model="loginInForm.name"></el-input>
+        <el-input placeholder="邮箱" class="form-item" type="text" @blur="emailCheck" v-model="loginInForm.email"></el-input>
         <el-input placeholder="密码" class="form-item" type="password" @blur="pswCheck" v-model="loginInForm.psw"></el-input>
-        <el-button class="form-item login-btn">登录</el-button>
+        <el-button class="form-item login-btn" @click="loginIn">登录</el-button>
         <el-button class="form-item" @click="turnHome">暂不登录，进入首页</el-button>
       </form>
       <form class="loginUp-form" v-if="isLoginUp" :model="loginUpForm" ref="loginUpForm">
-        <el-input placeholder="邮箱" class="form-item" type="text" @blur="nameCheck" v-model="loginUpForm.name"></el-input>
+        <el-input placeholder="邮箱" class="form-item" type="text" @blur="emailCheck" v-model="loginUpForm.email"></el-input>
         <el-input placeholder="密码" class="form-item" type="password" @blur="pswCheck" v-model="loginUpForm.psw"></el-input>
         <el-input placeholder="确认密码" class="form-item" type="password" @blur="pswConfirmCheck" v-model="loginUpForm.pswCheck"></el-input>
         <el-button class="form-item login-btn" @click="loginUp">注册</el-button>
@@ -26,15 +26,18 @@
         isLoginIn: true,
         isLoginUp: false,
         loginInForm: {
-          name: '',
+          email: '',
           psw: '',
-          correct: false
+          emailCorrect: false,
+          pswCorrect: false
         },
         loginUpForm: {
-          name: '',
+          email: '',
           psw: '',
           pswCheck: '',
-          correct: false
+          emailCorrect: false,
+          pswCorrect: false,
+          pswCheckCorrect: false
         }
       }
     },
@@ -43,64 +46,81 @@
         this.isLoginIn = true
         this.isLoginUp = false
         this.loginUpForm = {
-          name: '',
+          email: '',
           psw: '',
-          pswCheck: ''
+          pswCheck: '',
+          emailCorrect: false,
+          pswCorrect: false,
+          pswCheckCorrect: false
         }
       },
       loginUpShow () {
         this.isLoginIn = false
         this.isLoginUp = true
         this.loginInForm = {
-          name: '',
-          psw: ''
+          email: '',
+          psw: '',
+          emailCorrect: false,
+          pswCorrect: false
         }
       },
 
       // 邮箱校验
-      nameCheck () {
-        return new Promise((resolve, reject) => {
-          if ((this.isLoginIn && this.loginInForm.name.length === 0) || (this.isLoginUp && this.loginUpForm.name.length === 0)) {
+      emailCheck () {
+        if ((this.isLoginIn && this.loginInForm.email.length === 0) || (this.isLoginUp && this.loginUpForm.email.length === 0)) {
+          this.$message({
+            message: '邮箱号不能为空',
+            type: 'warning'
+          })
+        } else {
+          // 正则匹配邮箱格式
+          let email = this.loginInForm.email || this.loginUpForm.email
+          let reg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+          if (reg.test(email) === false) {
             this.$message({
-              message: '邮箱号不能为空',
+              message: '邮箱格式错误',
               type: 'warning'
             })
           } else {
-            // 正则匹配邮箱格式
-            let name = this.loginInForm.name || this.loginUpForm.name
-            let reg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
-            if (reg.test(name) === false) {
-              this.$message({
-                message: '邮箱格式错误',
-                type: 'warning'
-              })
+            if (this.isLoginIn) {
+              this.loginInForm.emailCorrect = true
+            } else {
+              this.loginUpForm.emailCorrect = true
             }
           }
-        })
+        }
       },
 
       // 密码校验
       pswCheck () {
-        return new Promise((resolve, reject) => {
-          if ((this.isLoginIn && this.loginInForm.psw.length < 8) || (this.isLoginUp && this.loginUpForm.psw.length < 8)) {
-            this.$message({
-              message: '密码不能少于8位',
-              type: 'warning'
-            })
+        if ((this.isLoginIn && this.loginInForm.psw.length < 8) || (this.isLoginUp && this.loginUpForm.psw.length < 8)) {
+          this.$message({
+            message: '密码不能少于8位',
+            type: 'warning'
+          })
+        } else {
+          if (this.isLoginIn) {
+            this.loginInForm.pswCorrect = true
+          } else {
+            this.loginUpForm.pswCorrect = true
           }
-        })
+        }
       },
 
       // 确认密码校验
       pswConfirmCheck () {
-        return new Promise((resolve, reject) => {
-          if (this.loginUpForm.pswCheck !== this.loginUpForm.psw) {
-            this.$message({
-              message: '两次密码输入不一致，请重试',
-              type: 'warning'
-            })
+        if (this.loginUpForm.pswCheck !== this.loginUpForm.psw) {
+          this.$message({
+            message: '两次密码输入不一致，请重试',
+            type: 'warning'
+          })
+        } else {
+          if (this.isLoginIn) {
+            this.loginInForm.pswCheckCorrect = true
+          } else {
+            this.loginUpForm.pswCheckCorrect = true
           }
-        })
+        }
       },
 
       // 不登录，直接进入首页
@@ -110,12 +130,69 @@
 
       // 注册账号
       loginUp () {
-        this.nameCheck()
-            .then(this.pswCheck)
-            .then(this.pswConfirmCheck)
-            .then(() => {
-              console.log('校验无误')
+        this.emailCheck()
+        this.pswCheck()
+        this.pswConfirmCheck()
+        let correct = this.loginUpForm.emailCorrect && this.loginUpForm.pswCorrect && this.loginUpForm.pswCheckCorrect
+        if (correct) {
+          var loginUpOption = {
+            email: this.loginUpForm.email,
+            psw: this.loginUpForm.psw
+          }
+          this.$http.post('/api/loginUp', loginUpOption)
+            .then((res) => {
+              if (res.data.state === '1') {
+                this.$message({
+                  message: res.data.tip,
+                  type: 'success'
+                })
+              } else {
+                this.$message({
+                  message: res.data.tip,
+                  type: 'error'
+                })
+              }
             })
+            .catch((res) => {
+              this.$message({
+                message: res.data.tip,
+                type: 'error'
+              })
+            })
+        }
+      },
+
+      // 账号登录
+      loginIn () {
+        this.emailCheck()
+        this.pswCheck()
+        let correct = this.loginInForm.emailCorrect && this.loginInForm.pswCorrect
+        if (correct) {
+          var loginInOption = {
+            email: this.loginInForm.email,
+            psw: this.loginInForm.psw
+          }
+          this.$http.post('/api/loginIn', loginInOption)
+            .then((res) => {
+              if (res.data.state === '1') {
+                this.$message({
+                  message: res.data.tip,
+                  type: 'success'
+                })
+              } else {
+                this.$message({
+                  message: res.data.tip,
+                  type: 'error'
+                })
+              }
+            })
+            .catch((res) => {
+              this.$message({
+                message: res.data.tip,
+                type: 'error'
+              })
+            })
+        }
       }
     }
   }
