@@ -4,20 +4,20 @@
       <img src="static/images/publish-icon.png" alt="">
       <h3>发布商品</h3>
     </div>
-    <el-form :model="publishForm" label-width="100px" class="publishForm" :label-position="right">
+    <el-form :model="publishForm" ref="publishForm" label-width="100px" class="publishForm">
       <el-form-item class="add-photo">
         <!--action：文件上传地址，show-file-list：显示上传文件列表，on-success：上传图片成功时的钩子,before-upload：图片上传前的钩子-->
-        <el-upload
-          class="head-upload"
-          action="#"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload">
-          <img v-if="headUrl" :src="headUrl" class="avatar">
-          <div v-else class="no-photo">
-            <a></a>
-          </div>
-        </el-upload>
+        <!--<el-upload-->
+          <!--class="head-upload"-->
+          <!--action="#"-->
+          <!--:show-file-list="false"-->
+          <!--:on-success="handleAvatarSuccess"-->
+          <!--:before-upload="beforeAvatarUpload">-->
+          <!--<img v-if="headUrl" :src="headUrl" class="avatar">-->
+          <!--<div v-else class="no-photo">-->
+            <!--<a></a>-->
+          <!--</div>-->
+        <!--</el-upload>-->
       </el-form-item>
       <el-form-item label="商品名称" class="publish-item">
         <el-input v-model="publishForm.name" placeholder="最多25个字"></el-input>
@@ -45,7 +45,7 @@
         <el-input v-model="publishForm.qq" class="short-input"></el-input>
       </el-form-item>
       <el-form-item class="publish-item">
-        <el-button class="publish-submit">马上发布</el-button>
+        <el-button class="publish-submit" @click="submitForm">马上发布</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -149,20 +149,46 @@
         }
       }
     },
-    mounted: function () {
-      this.$http.post('/api/publish', {
-        name: '金立手机',
-        poster: '张三',
-        introdution: '完好无损',
-        place: '西四',
-        contact: 119
-      })
-      .then(res => {
-        console.log(res)
-      })
-      .catch(res => {
-        console.log('提交出错')
-      })
+    methods: {
+      submitForm () {
+        let option = {
+          name: this.publishForm.name,
+          detail: this.publishForm.detail,
+          place: this.publishForm.place,
+          bargain: this.publishForm.bargain,
+          tel: this.publishForm.tel,
+          qq: this.publishForm.qq
+        }
+        this.$http.post('/api/publish', option)
+          .then(res => {
+            if (res.data.state === '1') {
+              this.$message({
+                message: res.data.msg,
+                type: 'success'
+              })
+            } else {
+              this.$message({
+                message: res.data.msg,
+                type: 'error'
+              })
+            }
+          })
+      }
     }
+//    mounted: function () {
+//      this.$http.post('/api/publish', {
+//        name: '金立手机',
+//        poster: '张三',
+//        introdution: '完好无损',
+//        place: '西四',
+//        contact: 119
+//      })
+//      .then(res => {
+//        console.log(res)
+//      })
+//      .catch(res => {
+//        console.log('提交出错')
+//      })
+//    }
   }
 </script>

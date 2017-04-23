@@ -35,9 +35,11 @@ router.get('/list', (req,res) => {
 router.post('/loginUp', (req, res) => {
   User.create(req.body, (err,user) => {
     if (err) {
-      res.json({state: '0', tip: '注册失败，请稍后重试'})
+      res.json({state: '0', msg: '注册失败，请稍后重试'})
     } else {
-      res.json({state: '1', tip: '注册成功'})
+      // 设置保持登录的session
+      req.session.user = {useremail: req.body.email, psw: req.body.psw}
+      res.json({state: '1', msg: '注册成功'})
     }
   })
 })
@@ -47,14 +49,46 @@ router.post('/loginIn', (req, res) => {
   User.findOne({'email': req.body.email}, 'psw')
     .then(user => {
       if (user.psw === req.body.psw) {
-        res.json({state: '1', tip: '登录成功'})
+        // 设置保持登录的session
+        req.session.user = {useremail: req.body.email, psw: req.body.psw}
+        res.json({state: '1', msg: '登录成功'})
       } else {
-        res.json({state: '0', tip: '密码错误，请重新输入'})
+        res.json({state: '0', msg: '密码错误，请重新输入'})
       }
     })
     .catch(err => {
-      res.json({state: '0', tip: '登录失败，请稍后重试'})
+      res.json({state: '0', msg: '登录失败，请稍后重试'})
     })
+})
+
+// 首页，如果账号已经登录则显示账号名
+router.get('/home', (req, res) => {
+  if (req.session.user) {
+    console.log(req.session.user)
+    res.json({islogin: true, useremail: req.session.user.useremail})
+  } else {
+    res.json({islogin: false})
+  }
+})
+
+// 退出登录，删除cookie
+router.get('/loginOut', (req, res) => {
+  delete req.session.user;
+})
+
+// 发布一件商品
+router.post('/publish', (req, res) => {
+  //var poster = req.session.user.useremail
+  //console.log(req.session.user)
+  var option = req.body
+  //option.poster = poster
+  Commodity.create(option, (err, commodity) => {
+    if (err) {
+      res.json({state: '0', msg: err})
+    } else {
+      res.json({state: '1', msg: '发布商品成功'})
+    }
+  })
 })
 
 // 获取二手商品

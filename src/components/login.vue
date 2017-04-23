@@ -143,19 +143,21 @@
             .then((res) => {
               if (res.data.state === '1') {
                 this.$message({
-                  message: res.data.tip,
+                  message: res.data.msg,
                   type: 'success'
                 })
+                // 登录成功之后跳转到主页
+                this.$router.replace({path: '/'})
               } else {
                 this.$message({
-                  message: res.data.tip,
+                  message: res.data.msg,
                   type: 'error'
                 })
               }
             })
             .catch((res) => {
               this.$message({
-                message: res.data.tip,
+                message: res.data.msg,
                 type: 'error'
               })
             })
@@ -176,19 +178,21 @@
             .then((res) => {
               if (res.data.state === '1') {
                 this.$message({
-                  message: res.data.tip,
+                  message: res.data.msg,
                   type: 'success'
                 })
+                // 登录成功之后跳转到主页
+                this.$router.replace({path: '/'})
               } else {
                 this.$message({
-                  message: res.data.tip,
+                  message: res.data.msg,
                   type: 'error'
                 })
               }
             })
             .catch((res) => {
               this.$message({
-                message: res.data.tip,
+                message: res.data.msg,
                 type: 'error'
               })
             })

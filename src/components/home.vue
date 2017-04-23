@@ -15,11 +15,26 @@
   import publish from './publish.vue'
 
   export default {
+    data () {
+      return {
+        useremail: ''
+      }
+    },
     components: {
       homeNav,
 //      homeSlide,
       foot,
       publish
+    },
+    // 已登录状态显示昵称，显示退出登录按钮
+    mounted: function () {
+      this.$http.get('/api/home')
+        .then(res => {
+          this.useremail = res.data.useremail
+        })
+        .catch(res => {
+          console.log(res.data)
+        })
     }
   }
 </script>
