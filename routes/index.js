@@ -46,8 +46,6 @@ router.post('/loginUp', (req, res) => {
 router.post('/loginIn', (req, res) => {
   User.findOne({'email': req.body.email}, 'psw')
     .then(user => {
-      console.log(user.psw)
-      console.log(req.body.psw)
       if (user.psw === req.body.psw) {
         res.json({state: '1', tip: '登录成功'})
       } else {
