@@ -4,21 +4,21 @@
       <img src="static/images/publish-icon.png" alt="">
       <h3>发布商品</h3>
     </div>
+    <el-form class="add-photo" enctype="multipart/form-data" method="post">
+      <el-upload
+        class="head-upload"
+        name="headUpload"
+        action="/api/upload"
+        :show-file-list="false"
+        :on-success="handleAvatarSuccess"
+        :before-upload="beforeAvatarUpload">
+        <img v-if="headUrl" :src="headUrl" class="avatar">
+        <div v-else class="no-photo">
+          <a></a>
+        </div>
+      </el-upload>
+    </el-form>
     <el-form :model="publishForm" ref="publishForm" label-width="100px" class="publishForm">
-      <el-form-item class="add-photo">
-        <!--action：文件上传地址，show-file-list：显示上传文件列表，on-success：上传图片成功时的钩子,before-upload：图片上传前的钩子-->
-        <!--<el-upload-->
-          <!--class="head-upload"-->
-          <!--action="#"-->
-          <!--:show-file-list="false"-->
-          <!--:on-success="handleAvatarSuccess"-->
-          <!--:before-upload="beforeAvatarUpload">-->
-          <!--<img v-if="headUrl" :src="headUrl" class="avatar">-->
-          <!--<div v-else class="no-photo">-->
-            <!--<a></a>-->
-          <!--</div>-->
-        <!--</el-upload>-->
-      </el-form-item>
       <el-form-item label="商品名称" class="publish-item">
         <el-input v-model="publishForm.name" placeholder="最多25个字"></el-input>
       </el-form-item>
@@ -69,39 +69,44 @@
         background-position: center 0;
       }
     }
-    .publishForm {
-      background-color: white;
-      .add-photo {
-        background-color: rgb(246, 249, 249);
-        .head-upload {
-          width: 160px;
+    .add-photo {
+      background-color: rgb(246, 249, 249);
+      padding: 20px 0;
+      .head-upload {
+        width: 160px;
+        height: 160px;
+        border-radius: 80px;
+        background-image: linear-gradient(rgb(68, 193, 165) 0%, rgb(255, 198, 0) 100%);
+        cursor: pointer;
+        margin-left: 340px;
+        .avatar {
           height: 160px;
-          border-radius: 80px;
-          background-image: linear-gradient(rgb(68, 193, 165) 0%, rgb(255, 198, 0) 100%);
-          cursor: pointer;
-          margin: 20px 0;
-          margin-left: 245px;           .no-photo {
-            width: 156px;
-            height: 156px;
-            border-radius: 78px;
-            margin: 2px 0 0 2px;
-            background-color: white;
-            overflow: hidden;
-            text-align: center;
-            a {
-              display: inline-block;
-              background-image: url('/static/images/addPhoto.png');
-              background-position: -10px -120px;
-              height: 100px;
-              width: 80px;
-              margin-top: 28px;
-              &:hover {
-                 background-position: -10px -11px;
-               }
-            }
+          width: 160px;
+        }
+        .no-photo {
+          width: 156px;
+          height: 156px;
+          border-radius: 78px;
+          margin: 2px 0 0 2px;
+          background-color: white;
+          overflow: hidden;
+          text-align: center;
+          a {
+            display: inline-block;
+            background-image: url('/static/images/addPhoto.png');
+            background-position: -10px -120px;
+            height: 100px;
+            width: 80px;
+            margin-top: 28px;
+            &:hover {
+               background-position: -10px -11px;
+             }
           }
         }
       }
+    }
+    .publishForm {
+      background-color: white;
       .publish-item {
         padding: 0 240px 0 140px;
         .short-input {
@@ -146,7 +151,8 @@
           bargain: '',
           tel: '',
           qq: ''
-        }
+        },
+        headUrl: ''
       }
     },
     methods: {
@@ -158,7 +164,8 @@
           price: this.publishForm.price,
           bargain: this.publishForm.bargain,
           tel: this.publishForm.tel,
-          qq: this.publishForm.qq
+          qq: this.publishForm.qq,
+          headUrl: this.headUrl
         }
         this.$http.post('/api/publish', option)
           .then(res => {
@@ -167,6 +174,7 @@
                 message: res.data.msg,
                 type: 'success'
               })
+              this.$router.replace({path: '/'})
             } else {
               this.$message({
                 message: res.data.msg,
@@ -174,6 +182,22 @@
               })
             }
           })
+      },
+      // 选择图片之后把本机图片位置作为图片的链接
+      handleAvatarSuccess (res, file) {
+        this.headUrl = res.headUrl
+        this.$message({
+          message: res.msg,
+          type: 'success'
+        })
+      },
+      beforeAvatarUpload (file) {
+        // 照片不能超过2M
+        const isLt2M = file.size / 1024 / 1024 < 2
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!')
+        }
+        return isLt2M
       }
     }
   }

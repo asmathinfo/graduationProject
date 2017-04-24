@@ -12,7 +12,7 @@
       </div>
       <ul class="list-content">
         <li v-for="item in commodityItems" @click="showDetail" :itemID="item.id">
-          <img src="static/images/list/phone.jpg" alt="">
+          <img :src="item.headUrl" alt="">
           <div class="item-name">{{ item.name }}</div>
           <div class="item-info"><span>通信12级</span><span>{{ item.poster }}</span></div>
           <div class="item-price">¥ <span>{{ item.price }}</span></div>

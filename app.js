@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
+const multer = require('multer')
 
 const index = require('./routes/index')
 const config = require('./config/db')

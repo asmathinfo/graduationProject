@@ -9,6 +9,7 @@ const commoditySchema = mongoose.Schema({
   price: Number,
   tel: Number,
   qq: Number,
+  headUrl: String,
   created_at: {type: Date, default: Date.now},
   updata_at: {type: Date, default: Date.now}
 })

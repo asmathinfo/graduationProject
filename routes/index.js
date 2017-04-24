@@ -2,11 +2,18 @@
  * Created by Administrator on 2017/4/21.
  */
 const express = require('express')
+const multer = require('multer')
+const fs = require('fs')
 
 const Commodity = require('../models/commodity')
 const User = require('../models/user')
 
 const router = express.Router();
+
+// 设置图片上传目录位置
+const upload = multer({
+  dest: 'static/images/upload/'
+})
 
 // 注册账号，检查是否已经注册过，state表示注册状态，1为注册成功，0为注册失败
 router.post('/loginUp', (req, res) => {
@@ -79,7 +86,7 @@ router.post('/publish', (req, res) => {
 
 // 获取首页的所有商品，state为1表示获取成功，为0表示获取失败d
 router.get('/list', (req, res) => {
-  Commodity.find({}, '_id name poster price')
+  Commodity.find({}, '_id name poster price headUrl')
     .then(commodity => {
       var commodityItems = []
       commodity.forEach(item => {
@@ -87,10 +94,10 @@ router.get('/list', (req, res) => {
           id: item._id,
           name: item.name,
           poster: item.poster,
-          price: item.price
+          price: item.price,
+          headUrl: item.headUrl
         })
       })
-      console.log(commodityItems)
       res.json({commodityItems: commodityItems})
     })
     .catch(err => {
@@ -98,5 +105,14 @@ router.get('/list', (req, res) => {
     })
 })
 
+router.post('/upload', upload.single('headUpload'), (req, res) => {
+  fs.rename(req.file.path, "static/images/upload/" + req.file.originalname, err => {
+    if (err) {
+      throw err
+      res.json({state: '0', msg: '图片上传失败，请刷新重试'})
+    }
+    res.json({state: '1', msg: '图片上传成功', headUrl: "static/images/upload/" + req.file.originalname})
+  })
+})
 
 module.exports = router;
