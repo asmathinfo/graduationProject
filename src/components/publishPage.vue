@@ -39,7 +39,7 @@
       </el-form-item>
       <div class="publish-contact">联系方式 <span>（至少选填一项）</span></div>
       <el-form-item label="手机" class="publish-item">
-        <el-input v-model="publishForm.phoneNum" class="short-input"></el-input>
+        <el-input v-model="publishForm.tel" class="short-input"></el-input>
       </el-form-item>
       <el-form-item label="QQ" class="publish-item">
         <el-input v-model="publishForm.qq" class="short-input"></el-input>
@@ -144,7 +144,7 @@
           place: '',
           price: '',
           bargain: '',
-          phoneNum: '',
+          tel: '',
           qq: ''
         }
       }
@@ -155,6 +155,7 @@
           name: this.publishForm.name,
           detail: this.publishForm.detail,
           place: this.publishForm.place,
+          price: this.publishForm.price,
           bargain: this.publishForm.bargain,
           tel: this.publishForm.tel,
           qq: this.publishForm.qq
@@ -175,20 +176,5 @@
           })
       }
     }
-//    mounted: function () {
-//      this.$http.post('/api/publish', {
-//        name: '金立手机',
-//        poster: '张三',
-//        introdution: '完好无损',
-//        place: '西四',
-//        contact: 119
-//      })
-//      .then(res => {
-//        console.log(res)
-//      })
-//      .catch(res => {
-//        console.log('提交出错')
-//      })
-//    }
   }
 </script>

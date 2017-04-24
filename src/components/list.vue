@@ -11,10 +11,10 @@
         </div>
       </div>
       <ul class="list-content">
-        <li v-for="item in commodityItems" @click="showDetail">
+        <li v-for="item in commodityItems" @click="showDetail" :itemID="item.id">
           <img src="static/images/list/phone.jpg" alt="">
           <div class="item-name">{{ item.name }}</div>
-          <div class="item-info"><span>通信12级</span><span>{{ item.owner.name }}</span></div>
+          <div class="item-info"><span>通信12级</span><span>{{ item.poster }}</span></div>
           <div class="item-price">¥ <span>{{ item.price }}</span></div>
         </li>
       </ul>
@@ -33,8 +33,7 @@
     mounted: function () {
       this.$http.get('/api/list')
         .then(res => {
-          console.dir(res.data)
-          this.commodityItems = res.data
+          this.commodityItems = res.data.commodityItems
         })
         .catch(function (res) {
           console.log(res)
