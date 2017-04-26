@@ -2,7 +2,7 @@
   <div class="wrap">
     <p class="welcome">欢迎</p>
     <div class="login-content">
-      <div class="title"><span :class="{ select : isLoginIn }" @click="loginInShow">登录</span> · <span :class="{ select : isLoginUp }" @click="loginUpShow">注册</span></div>
+      <div class="title"><span :class="{ select : isLoginIn }" @click="loginInDiv">登录</span> · <span :class="{ select : isLoginUp }" @click="loginUpDiv">注册</span></div>
       <form class="loginIn-form" v-if="isLoginIn" :model="loginInForm" ref="loginInForm">
         <el-input placeholder="邮箱" class="form-item" type="text" @blur="emailCheck" v-model="loginInForm.email"></el-input>
         <el-input placeholder="密码" class="form-item" type="password" @blur="pswCheck" v-model="loginInForm.psw"></el-input>
@@ -20,6 +20,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {mapState} from 'vuex'
+
   export default {
     data () {
       return {
@@ -42,7 +44,7 @@
       }
     },
     methods: {
-      loginInShow () {
+      loginInDiv () {
         this.isLoginIn = true
         this.isLoginUp = false
         this.loginUpForm = {
@@ -54,7 +56,7 @@
           pswCheckCorrect: false
         }
       },
-      loginUpShow () {
+      loginUpDiv () {
         this.isLoginIn = false
         this.isLoginUp = true
         this.loginInForm = {
@@ -198,6 +200,16 @@
             })
         }
       }
+    },
+    computed: {
+      ...mapState([
+        'loginInShow',
+        'loginUpShow'
+      ])
+    },
+    mounted () {
+      this.isLoginIn = this.loginInShow
+      this.isLoginUp = this.loginUpShow
     }
   }
 </script>

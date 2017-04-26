@@ -1,6 +1,7 @@
 <template>
   <div>
-    <router-link :to="{path: '/home/publish'}"></router-link>
+    <!--<router-link :to="{path: '/home/publish'}"></router-link>-->
+    <a @click="publish"></a>
   </div>
 </template>
 
@@ -19,4 +20,24 @@
 </style>
 
 <script type="text/ecmascript-6">
+  export default {
+    methods: {
+      // 如果还没登录，跳转登录
+      publish () {
+        this.$http.get('/api/judgePublish')
+          .then(res => {
+            if (res.data.state === '0') {
+              this.$message({
+                message: res.data.msg,
+                type: 'warning'
+              })
+            }
+            this.$router.push({path: res.data.url})
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
+    }
+  }
 </script>

@@ -18,15 +18,18 @@
         </div>
       </li>
       <li class="home-person">
-        <div class="owner-div">
+        <div class="owner-div" v-if="this.islogin">
           <img src="static/images/nav/100.png" alt="" @click="turnPerson">
-          <span @click="turnPerson">访客</span>
-          <router-link :to="{path: '/login'}" class="login-button">退出登录</router-link>
+          <span @click="turnPerson">{{this.emailname}}</span>
+          <!--<router-link :to="{path: '/login'}" class="login-button" @click="loginOut">退出登录</router-link>-->
+          <a class="login-button" @click="loginOut">退出登录</a>
         </div>
-        <!--<div class="login-div">-->
+        <div class="login-div" v-else>
           <!--<router-link :to="{path: '/login'}" class="login-button">登录</router-link>-->
           <!--<router-link :to="{path: '/login'}" class="login-button">注册</router-link>-->
-        <!--</div>-->
+          <a class="login-button" @click="loginIn">登录</a>
+          <a class="login-button" @click="loginUp">注册</a>
+        </div>
       </li>
     </ul>
   </div>
@@ -141,6 +144,7 @@
           border: 1px solid white;
           text-indent: 0;
           margin-left: 30px;
+          cursor: pointer;
           &:hover {
            border: 1px solid rgb(100, 203, 177);
            color: rgb(100, 203, 177);
@@ -161,6 +165,7 @@
           width: 72px;
           border: 1px solid white;
           text-indent: 0;
+          cursor: pointer;
           &:hover {
             border: 1px solid rgb(100, 203, 177);
             color: rgb(100, 203, 177);
@@ -173,14 +178,53 @@
 </style>
 
 <script type="text/ecmascript-6">
+  import {mapState} from 'vuex'
+
   export default {
     methods: {
-      turnHome: function () {
+      // 跳转首页
+      turnHome () {
         this.$router.replace({ path: '/home' })
       },
-      turnPerson: function () {
+      // 跳转个人页
+      turnPerson () {
         this.$router.push({path: '/home/person'})
+      },
+      // 退出登录
+      loginOut () {
+        this.$http.get('/api/loginOut')
+          .then(res => {
+            this.$message({
+              message: res.data.msg,
+              type: 'success'
+            })
+            this.$router.replace({path: '/login'})
+          })
+      },
+      // 登录页面
+      loginIn () {
+        this.$store.commit({
+          'type': 'loginShow',
+          'loginInShow': true,
+          'loginUpShow': false
+        })
+        this.$router.push({path: '/login'})
+      },
+      // 注册页面
+      loginUp () {
+        this.$store.commit({
+          'type': 'loginShow',
+          'loginInShow': false,
+          'loginUpShow': true
+        })
+        this.$router.push({path: '/login'})
       }
+    },
+    computed: {
+      ...mapState([
+        'emailname',
+        'islogin'
+      ])
     }
   }
 </script>

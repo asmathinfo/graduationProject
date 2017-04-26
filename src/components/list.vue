@@ -11,7 +11,7 @@
         </div>
       </div>
       <ul class="list-content">
-        <li v-for="item in commodityItems" @click="showDetail" :itemID="item.id">
+        <li v-for="item in commodityItems" @click="showDetail(item.id)" :itemID="item.id">
           <img :src="item.headUrl" alt="">
           <div class="item-name">{{ item.name }}</div>
           <div class="item-info"><span>通信12级</span><span>{{ item.poster }}</span></div>
@@ -40,8 +40,21 @@
         })
     },
     methods: {
-      showDetail: function () {
-        this.$router.push({path: '/home/detail'})
+      showDetail: function (itemID) {
+        this.$http.post('/api/detail', {itemID: itemID})
+          .then(res => {
+            this.$store.commit({
+              'type': 'showCommodityDetail',
+              'commodityDetail': res.data.commodity
+            })
+            this.$router.push({path: '/home/detail'})
+          })
+          .catch(res => {
+            this.$message({
+              message: res.data.msg,
+              type: 'error'
+            })
+          })
       },
       attentionRule: function () {
         // 提交vuex的mutation，type是vuex对应的mutation函数

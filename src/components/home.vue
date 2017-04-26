@@ -26,11 +26,16 @@
       foot,
       publish
     },
-    // 已登录状态显示昵称，显示退出登录按钮
+    // 已登录状态显示昵称，显示退出登录按钮，并用vuex mutation提交emailname
     mounted: function () {
       this.$http.get('/api/home')
         .then(res => {
-          this.useremail = res.data.useremail
+          this.useremail = res.data.useremail ? res.data.useremail : '普通用户'
+          this.$store.commit({
+            'type': 'showName',
+            'islogin': res.data.islogin,
+            'emailname': this.useremail
+          })
         })
         .catch(res => {
           console.log(res.data)

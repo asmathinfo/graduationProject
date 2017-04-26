@@ -23,7 +23,7 @@ app.use(cookieParser())
 app.use(session({
   secret: 'graduation',
   name: 'user',
-  cookie: {maxAge: 60000}
+  cookie: {maxAge: 600000}
 }))
 app.use('/api', index)
 

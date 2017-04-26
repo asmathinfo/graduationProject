@@ -2,48 +2,47 @@
   <div>
     <div class="commdity-wrap">
       <div class="commodity-content">
-        <div class="commdity-img"><img src="static/images/list/phone.jpg" alt=""></div>
+        <div class="commdity-img"><img :src="headUrl" alt="哎呀，图片走丢了"></div>
         <div class="commdity-description">
           <div class="commdity-info">
-            <p class="commdity-title">二手超极本</p>
+            <p class="commdity-title">{{this.commodityDetail.name}}</p>
             <div class="commdity-price">
-              <span>¥&nbsp;&nbsp;1300</span>
-              <span>不可刀</span>
+              <span>¥&nbsp;&nbsp;{{this.commodityDetail.price}}</span>
+              <span>{{this.commodityDetail.bargain}}</span>
             </div>
             <div class="commdity-visit">浏览了86次</div>
           </div>
           <ul class="commdity-trading">
             <li>
               <div class="commdity-trading-item">交易地点</div>
-              <span>广工西四</span>
+              <span>{{this.commodityDetail.place}}</span>
             </li>
             <li>
               <div class="commdity-trading-item">卖家</div>
-              <span>张三</span>
+              <span>{{this.commodityDetail.poster}}</span>
             </li>
             <li>
-              <div class="commdity-trading-item">认证状态</div>
+              <div class="commdity-trading-item">专业</div>
               <span>13级通信</span>
             </li>
             <li>
               <div class="commdity-trading-item">手机</div>
-              <span>12345678909</span>
+              <span>{{this.commodityDetail.tel}}</span>
             </li>
             <li>
               <div class="commdity-trading-item">QQ</div>
-              <span>0987654321</span>
+              <span>{{this.commodityDetail.qq}}</span>
             </li>
             <li>
               <div class="commdity-trading-item">发布时间</div>
-              <span>今天</span>
+              <span>{{this.creatDate}}</span>
             </li>
           </ul>
         </div>
       </div>
       <div class="commdity-note">
         <img src="static/images/nav/logo.png" alt="">
-        <div>原价5600（大概吧，别人送的具体忘了）的笔记本电脑，超极本，2g独显gt740，1t机械＋24g固态（就是个笑话别在意），120g固态（装在光驱位），4g内存，还很好用，毕业准备换台式跑软件所以出手，屏幕键盘硬盘充电器都是好的，光驱换成了固态做系统现在开机、运行都很快，不加固态1300，加固态（固态刚加上并不久）1650可小刀，只接受当面交易
-          联系我时，请说明是在『华中科技大学二手街』上看到的哦</div>
+        <div>{{this.commodityDetail.detail}}</div>
       </div>
       <div class="commdity-comment">
         <span class="commdity-comment-title">评论</span>
@@ -106,6 +105,28 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {mapState} from 'vuex'
+
+  export default {
+    data () {
+      return {
+        creatDate: '',
+        headUrl: ''
+      }
+    },
+    computed: {
+      ...mapState([
+        'commodityDetail'
+      ])
+    },
+    mounted () {
+      let year = new Date(this.commodityDetail.created_at).getFullYear()
+      let month = new Date(this.commodityDetail.created_at).getMonth() + 1
+      let date = new Date(this.commodityDetail.created_at).getDate()
+      this.creatDate = year + '.' + month + '.' + date
+      this.headUrl = this.commodityDetail.headUrl
+    }
+  }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
@@ -195,6 +216,10 @@
         width: 52px;
         height: 52px;
         border-radius: 26px;
+      }
+      div {
+        min-height: 55px;
+        padding-top: 20px;
       }
     }
     .commdity-comment {

@@ -58,7 +58,6 @@ router.post('/loginIn', (req, res) => {
 // 首页，如果账号已经登录则显示账号名
 router.get('/home', (req, res) => {
   if (req.session.user) {
-    console.log(req.session.user)
     res.json({islogin: true, useremail: req.session.user.useremail})
   } else {
     res.json({islogin: false})
@@ -68,6 +67,7 @@ router.get('/home', (req, res) => {
 // 退出登录，删除cookie
 router.get('/loginOut', (req, res) => {
   delete req.session.user;
+  res.json({state: '0',msg: '退出成功'})
 })
 
 // 发布一件商品
@@ -82,6 +82,41 @@ router.post('/publish', (req, res) => {
       res.json({state: '1', msg: '发布商品成功'})
     }
   })
+})
+
+// 发布商品时候附带的商品照片
+router.post('/upload', upload.single('headUpload'), (req, res) => {
+  fs.rename(req.file.path, "static/images/upload/" + req.file.originalname, err => {
+    if (err) {
+      throw err
+      res.json({state: '0', msg: '图片上传失败，请刷新重试'})
+    }
+    res.json({state: '1', msg: '图片上传成功', headUrl: "static/images/upload/" + req.file.originalname})
+  })
+})
+
+// 获取商品详细信息
+router.post('/detail', (req, res) => {
+  Commodity.findById(req.body.itemID)
+    .then(commodity => {
+      var commodityContent = {
+        id: commodity._id,
+        name: commodity.name,
+        detail: commodity.detail,
+        place: commodity.place,
+        price: commodity.price,
+        bargain: commodity.bargain,
+        tel: commodity.tel,
+        qq: commodity.qq,
+        headUrl: commodity.headUrl,
+        poster: commodity.poster,
+        created_at: commodity.created_at
+      }
+      res.json({state: '1', commodity: commodityContent})
+    })
+    .catch(err => {
+      res.json({state: '0', msg: '获取商品详情失败'})
+    })
 })
 
 // 获取首页的所有商品，state为1表示获取成功，为0表示获取失败d
@@ -105,14 +140,14 @@ router.get('/list', (req, res) => {
     })
 })
 
-router.post('/upload', upload.single('headUpload'), (req, res) => {
-  fs.rename(req.file.path, "static/images/upload/" + req.file.originalname, err => {
-    if (err) {
-      throw err
-      res.json({state: '0', msg: '图片上传失败，请刷新重试'})
-    }
-    res.json({state: '1', msg: '图片上传成功', headUrl: "static/images/upload/" + req.file.originalname})
-  })
+// 在发布时候判断用户是否已经登录
+router.get('/judgePublish', (req, res) => {
+  if (req.session.user) {
+    res.json({state: '1', url: '/home/publish'})
+  } else {
+    res.json({state: '0', msg: '登录之后才能发布商品', url: '/login'})
+  }
 })
+
 
 module.exports = router;
