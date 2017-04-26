@@ -108,9 +108,9 @@ router.get('/loginOut', (req, res) => {
 
 // 发布一件商品
 router.post('/publish', (req, res) => {
-  var poster = req.session.user.name
   var option = req.body
-  option.poster = poster
+  option.poster = req.session.user.name
+  option.posterUrl = req.session.user.headUrl
   Commodity.create(option, (err, commodity) => {
     if (err) {
       res.json({state: '0', msg: err})
@@ -146,6 +146,7 @@ router.post('/detail', (req, res) => {
         qq: commodity.qq,
         headUrl: commodity.headUrl,
         poster: commodity.poster,
+        posterUrl: commodity.posterUrl,
         created_at: commodity.created_at
       }
       res.json({state: '1', commodity: commodityContent})

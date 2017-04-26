@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="commdity-note">
-        <img src="static/images/nav/logo.png" alt="">
+        <img :src="commodityDetail.posterUrl" alt="">
         <div>{{this.commodityDetail.detail}}</div>
       </div>
       <div class="commdity-comment">
@@ -120,6 +120,7 @@
       ])
     },
     mounted () {
+      console.log(this.commodityDetail)
       let year = new Date(this.commodityDetail.created_at).getFullYear()
       let month = new Date(this.commodityDetail.created_at).getMonth() + 1
       let date = new Date(this.commodityDetail.created_at).getDate()

@@ -10,6 +10,7 @@ const commoditySchema = mongoose.Schema({
   tel: Number,
   qq: Number,
   headUrl: String,
+  posterUrl: String,
   created_at: {type: Date, default: Date.now},
   updata_at: {type: Date, default: Date.now}
 })

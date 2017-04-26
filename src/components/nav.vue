@@ -230,6 +230,7 @@
           'type': 'search',
           'searchWord': this.searchWord
         })
+        this.$router.push({ path: '/home' })
       }
     },
     computed: {
