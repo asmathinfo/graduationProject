@@ -10,7 +10,8 @@ Vue.use(Vuex)
 const state = {
   'attentionRead': false,           // 点击注意事项
   'attentionRule': false,           // 点击发布规则
-  'emailname': '',                  // 显示导航栏用户名
+  'name': '',                       // 显示导航栏用户名
+  'headUrl': '',                    // 用户头像
   'islogin': false,                 // 是否登录
   'loginInShow': true,              // 显示登录页面
   'loginUpShow': false,             // 显示注册页面
@@ -25,9 +26,10 @@ const mutations = {
     state.attentionRule = attention.attentionRule
   },
   // 显示导航栏的昵称
-  showName (state, emailname) {
-    state.emailname = emailname.emailname
-    state.islogin = emailname.islogin
+  showName (state, name) {
+    state.name = name.name
+    state.islogin = name.islogin
+    state.headUrl = name.headUrl
   },
   // 选择显示登录还是注册
   loginShow (state, loginShow) {
@@ -37,6 +39,14 @@ const mutations = {
   // 显示商品详情
   showCommodityDetail (state, commodityDetail) {
     state.commodityDetail = commodityDetail.commodityDetail
+  },
+  // 修改昵称
+  editName (state, name) {
+    state.name = name.name
+  },
+  // 修改头像
+  editHead (state, headUrl) {
+    state.headUrl = headUrl.headUrl
   }
 }
 

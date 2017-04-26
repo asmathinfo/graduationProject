@@ -19,8 +19,8 @@
       </li>
       <li class="home-person">
         <div class="owner-div" v-if="this.islogin">
-          <img src="static/images/nav/100.png" alt="" @click="turnPerson">
-          <span @click="turnPerson">{{this.emailname}}</span>
+          <img :src="headUrl" alt="" @click="turnPerson">
+          <span @click="turnPerson">{{this.name}}</span>
           <!--<router-link :to="{path: '/login'}" class="login-button" @click="loginOut">退出登录</router-link>-->
           <a class="login-button" @click="loginOut">退出登录</a>
         </div>
@@ -222,8 +222,9 @@
     },
     computed: {
       ...mapState([
-        'emailname',
-        'islogin'
+        'name',
+        'islogin',
+        'headUrl'
       ])
     }
   }

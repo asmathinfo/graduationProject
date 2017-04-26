@@ -17,7 +17,8 @@
   export default {
     data () {
       return {
-        useremail: ''
+        name: '',
+        headUrl: ''
       }
     },
     components: {
@@ -30,11 +31,12 @@
     mounted: function () {
       this.$http.get('/api/home')
         .then(res => {
-          this.useremail = res.data.useremail ? res.data.useremail : '普通用户'
+          this.name = res.data.name
           this.$store.commit({
             'type': 'showName',
             'islogin': res.data.islogin,
-            'emailname': this.useremail
+            'name': this.name,
+            'headUrl': res.data.headUrl
           })
         })
         .catch(res => {
