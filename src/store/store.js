@@ -15,7 +15,8 @@ const state = {
   'islogin': false,                 // 是否登录
   'loginInShow': true,              // 显示登录页面
   'loginUpShow': false,             // 显示注册页面
-  'commodityDetail': {}             // 商品详情
+  'commodityDetail': {},            // 商品详情
+  'searchWord': ''                  // 搜索的关键字
 }
 
 // 创建一个对象存储一系列接下来要写的mutation函数
@@ -47,6 +48,10 @@ const mutations = {
   // 修改头像
   editHead (state, headUrl) {
     state.headUrl = headUrl.headUrl
+  },
+  // 搜索商品
+  search (state, search) {
+    state.searchWord = search.searchWord
   }
 }
 

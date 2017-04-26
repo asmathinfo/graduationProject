@@ -108,7 +108,7 @@ router.get('/loginOut', (req, res) => {
 
 // 发布一件商品
 router.post('/publish', (req, res) => {
-  var poster = req.session.user.useremail
+  var poster = req.session.user.name
   var option = req.body
   option.poster = poster
   Commodity.create(option, (err, commodity) => {
@@ -203,6 +203,5 @@ router.get('/personCommodity', (req, res) => {
       res.json({state: '0', msg: '获取商品失败，请稍后重试'})
     })
 })
-
 
 module.exports = router;

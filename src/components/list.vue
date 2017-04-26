@@ -10,11 +10,19 @@
           <a @click="attentionRead">购买二手iphone等数码产品注意事项</a>
         </div>
       </div>
-      <ul class="list-content">
+      <ul class="list-content" v-if="commoditySearch.length === 0">
         <li v-for="item in commodityItems" @click="showDetail(item.id)" :itemID="item.id">
           <img :src="item.headUrl" alt="">
           <div class="item-name">{{ item.name }}</div>
-          <div class="item-info"><span>通信12级</span><span>{{ item.poster }}</span></div>
+          <div class="item-info">{{ item.poster }}</div>
+          <div class="item-price">¥ <span>{{ item.price }}</span></div>
+        </li>
+      </ul>
+      <ul class="list-content" v-else>
+        <li v-for="item in commoditySearch" @click="showDetail(item.id)" :itemID="item.id">
+          <img :src="item.headUrl" alt="">
+          <div class="item-name">{{ item.name }}</div>
+          <div class="item-info">{{ item.poster }}</div>
           <div class="item-price">¥ <span>{{ item.price }}</span></div>
         </li>
       </ul>
@@ -23,11 +31,29 @@
 </template>
 
 <script type="text/ecmascript-6">
-
   export default {
     data () {
       return {
         commodityItems: []
+      }
+    },
+    // 通过计算属性来实现搜索
+    computed: {
+      searchWord () {
+        return this.$store.state.searchWord
+      },
+      commoditySearch () {
+        let commodity = this.commodityItems
+        let commodityResult = commodity.filter((item) => {
+          return item.name.indexOf(this.searchWord) > -1
+        })
+        if (commodityResult.length === 0 && commodity.length > 0) {
+          this.$message({
+            message: '暂无相关的二手商品',
+            type: 'warning'
+          })
+        }
+        return commodityResult
       }
     },
     mounted: function () {
@@ -40,6 +66,7 @@
         })
     },
     methods: {
+      // 跳转详情页面
       showDetail: function (itemID) {
         this.$http.post('/api/detail', {itemID: itemID})
           .then(res => {
@@ -149,11 +176,7 @@
           font-size: 14px;
           padding: 7px;
           color: gray;
-
-          span:last-child {
-            float: right;
-            display: inline-block;
-          }
+          text-align: right;
 
         }
         .item-price {

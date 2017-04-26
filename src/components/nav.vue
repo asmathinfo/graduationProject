@@ -13,7 +13,7 @@
           <button class="search-right">搜索</button>
           <div class="search-left">
             <img src="static/images/nav/search-icon.png" alt="">
-            <div class="search-input"><input type="text" placeholder="搜索"></div>
+            <div class="search-input"><input type="text" placeholder="搜索" v-model="searchWord" @blur="search" @keyup.enter="search"></div>
           </div>
         </div>
       </li>
@@ -181,6 +181,11 @@
   import {mapState} from 'vuex'
 
   export default {
+    data () {
+      return {
+        searchWord: ''          // 搜索的关键词
+      }
+    },
     methods: {
       // 跳转首页
       turnHome () {
@@ -218,6 +223,13 @@
           'loginUpShow': true
         })
         this.$router.push({path: '/login'})
+      },
+      // 搜索关键字
+      search () {
+        this.$store.commit({
+          'type': 'search',
+          'searchWord': this.searchWord
+        })
       }
     },
     computed: {
