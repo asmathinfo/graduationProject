@@ -94,7 +94,6 @@
       ])
     },
     mounted () {
-      console.log(this.commodityDetail)
       let year = new Date(this.commodityDetail.created_at).getFullYear()
       let month = new Date(this.commodityDetail.created_at).getMonth() + 1
       let date = new Date(this.commodityDetail.created_at).getDate()
@@ -103,7 +102,6 @@
       this.id = this.commodityDetail.id
       this.$http.post('/api/commentList', {id: this.id})
         .then(res => {
-          console.log(res)
           if (res.data.state === '1') {
             this.commentItems = res.data.commentItems
             // 对数据库的时间进行格式化

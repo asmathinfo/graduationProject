@@ -59,6 +59,7 @@
     mounted: function () {
       this.$http.get('/api/list')
         .then(res => {
+          console.log(res.data)
           this.commodityItems = res.data.commodityItems
         })
         .catch(function (res) {

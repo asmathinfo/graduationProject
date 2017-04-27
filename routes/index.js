@@ -75,6 +75,8 @@ router.post('/editName', (req, res) => {
       res.json({state: '0', msg: '昵称修改失败'})
     } else {
       res.json({state: '1', msg: '昵称修改成功'})
+      req.session.user.name = req.body.name
+      req.session.save()
     }
   })
 })
@@ -86,6 +88,8 @@ router.post('/editHead', (req, res) => {
       res.json({state: '0', msg: '头像修改失败'})
     } else {
       res.json({state: '1', msg: '头像修改成功'})
+      req.session.user.headUrl = req.body.headUrl
+      req.session.save()
     }
   })
 })
@@ -112,6 +116,7 @@ router.post('/publish', (req, res) => {
   var option = req.body
   option.poster = req.session.user.name
   option.posterUrl = req.session.user.headUrl
+  option.posterId = req.session.user.id
   Commodity.create(option, (err, commodity) => {
     if (err) {
       res.json({state: '0', msg: err})
@@ -189,7 +194,7 @@ router.get('/judgePublish', (req, res) => {
 
 // 获取个人的发布的商品
 router.get('/personCommodity', (req, res) => {
-  Commodity.find({'poster': req.session.user.useremail}, '_id name price')
+  Commodity.find({posterId: req.session.user.id})
     .then(commodity => {
       var commodityItems = []
       commodity.forEach(item => {

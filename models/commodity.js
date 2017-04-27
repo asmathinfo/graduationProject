@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const commoditySchema = mongoose.Schema({
   name: {type:String, required: true},
   poster: String,
+  posterId: String,
   detail: String,
   place: String,
   bargain: String,
