@@ -2,7 +2,7 @@
   <div>
     <div class="commdity-wrap">
       <div class="commodity-content">
-        <div class="commdity-img"><img :src="headUrl" alt="哎呀，图片走丢了"></div>
+        <div class="commdity-img"><img :src="commodityHeadUrl" alt="哎呀，图片走丢了"></div>
         <div class="commdity-description">
           <div class="commdity-info">
             <p class="commdity-title">{{this.commodityDetail.name}}</p>
@@ -21,10 +21,10 @@
               <div class="commdity-trading-item">卖家</div>
               <span>{{this.commodityDetail.poster}}</span>
             </li>
-            <li>
-              <div class="commdity-trading-item">专业</div>
-              <span>13级通信</span>
-            </li>
+            <!--<li>-->
+              <!--<div class="commdity-trading-item">专业</div>-->
+              <!--<span>13级通信</span>-->
+            <!--</li>-->
             <li>
               <div class="commdity-trading-item">手机</div>
               <span>{{this.commodityDetail.tel}}</span>
@@ -47,55 +47,24 @@
       <div class="commdity-comment">
         <span class="commdity-comment-title">评论</span>
         <ul>
-          <li>
-            <img src="static/images/nav/logo.png" alt="">
+          <li v-for="item in commentItems">
+            <img :src="item.headUrl" alt="">
             <div class="commdity-comment-item">
-              <div class="commdity-comment-user">李四</div>
-              <p>聚友缘别墅预定电话18162663596绑定微信\n 聚友缘别墅三层400平米，娱乐设施有 KTV 影院 台球 桌游 麻将 xbox360体感游戏 足球机 桌上冰球 街机游戏 象棋飞行棋军棋 自助厨房 包饺子 火锅 炒菜 烧烤 刷夜客房 100兆wifi全覆盖，适合班级聚会，社团聚会，生日聚会，老乡聚会，部门聚餐</p>
-              <a href="#"></a>
+              <div class="commdity-comment-user">{{item.name}}</div>
+              <p>{{item.commentContent}}</p>
+              <div class="commodity-time">{{item.created_at}}</div>
             </div>
-          </li>
-          <li>
-            <img src="static/images/nav/logo.png" alt="">
-            <div class="commdity-comment-item">
-              <div class="commdity-comment-user">李四</div>
-              <p>聚友缘别墅预定电话18162663596绑定微信\n 聚友缘别墅三层400平米，娱乐设施有 KTV 影院 台球 桌游 麻将 xbox360体感游戏 足球机 桌上冰球 街机游戏 象棋飞行棋军棋 自助厨房 包饺子 火锅 炒菜 烧烤 刷夜客房 100兆wifi全覆盖，适合班级聚会，社团聚会，生日聚会，老乡聚会，部门聚餐</p>
-              <a href="#"></a>
-            </div>
-          </li>
-          <li>
-            <img src="static/images/nav/logo.png" alt="">
-            <div class="commdity-comment-item">
-              <div class="commdity-comment-user">李四</div>
-              <p>聚友缘别墅预定电话18162663596绑定微信\n 聚友缘别墅三层400平米，娱乐设施有 KTV 影院 台球 桌游 麻将 xbox360体感游戏 足球机 桌上冰球 街机游戏 象棋飞行棋军棋 自助厨房 包饺子 火锅 炒菜 烧烤 刷夜客房 100兆wifi全覆盖，适合班级聚会，社团聚会，生日聚会，老乡聚会，部门聚餐</p>
-              <a href="#"></a>
-            </div>
-          </li>
-          <li>
-            <img src="static/images/nav/logo.png" alt="">
-            <div class="commdity-comment-item">
-              <div class="commdity-comment-user">李四</div>
-              <p>聚友缘别墅预定电话18162663596绑定微信\n 聚友缘别墅三层400平米，娱乐设施有 KTV 影院 台球 桌游 麻将 xbox360体感游戏 足球机 桌上冰球 街机游戏 象棋飞行棋军棋 自助厨房 包饺子 火锅 炒菜 烧烤 刷夜客房 100兆wifi全覆盖，适合班级聚会，社团聚会，生日聚会，老乡聚会，部门聚餐</p>
-              <a href="#"></a>
-            </div>
-          </li>
-          <li>
-            <img src="static/images/nav/logo.png" alt="">
-            <div class="commdity-comment-item">
-              <div class="commdity-comment-user">李四</div>
-              <p>聚友缘别墅预定电话18162663596绑定微信\n 聚友缘别墅三层400平米，娱乐设施有 KTV 影院 台球 桌游 麻将 xbox360体感游戏 足球机 桌上冰球 街机游戏 象棋飞行棋军棋 自助厨房 包饺子 火锅 炒菜 烧烤 刷夜客房 100兆wifi全覆盖，适合班级聚会，社团聚会，生日聚会，老乡聚会，部门聚餐</p>
-              <a href="#"></a>
-            </div>
-          </li>
           </li>
           <div class="commdity-comment-self">
-            <img src="static/images/nav/logo.png" alt="">
+            <img :src="headUrl" alt="" v-if="headUrl">
+            <img src="static/images/nav/logo.png" alt="" v-else>
             <div class="self-content">
               <el-input
                 type="textarea"
                 :rows="2"
+                v-model="commentContent"
               ></el-input>
-              <el-button class="self-content-submit">评论</el-button>
+              <el-button class="self-content-submit" @click="publishComment">评论</el-button>
             </div>
           </div>
         </ul>
@@ -111,12 +80,17 @@
     data () {
       return {
         creatDate: '',
-        headUrl: ''
+        commodityHeadUrl: '',         // 商品的图片
+        id: '',
+        commentContent: '',
+        commentItems: []              // 评论列表
       }
     },
     computed: {
       ...mapState([
-        'commodityDetail'
+        'commodityDetail',
+        'name',
+        'headUrl'                     // 当前登录用户的头像
       ])
     },
     mounted () {
@@ -125,7 +99,62 @@
       let month = new Date(this.commodityDetail.created_at).getMonth() + 1
       let date = new Date(this.commodityDetail.created_at).getDate()
       this.creatDate = year + '.' + month + '.' + date
-      this.headUrl = this.commodityDetail.headUrl
+      this.commodityHeadUrl = this.commodityDetail.headUrl
+      this.id = this.commodityDetail.id
+      this.$http.post('/api/commentList', {id: this.id})
+        .then(res => {
+          console.log(res)
+          if (res.data.state === '1') {
+            this.commentItems = res.data.commentItems
+            // 对数据库的时间进行格式化
+            this.commentItems.forEach(item => {
+              item.created_at = this.timeFormat(new Date(item.created_at))
+            })
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: 'warning'
+            })
+          }
+        })
+    },
+    methods: {
+      // 格式化时间
+      timeFormat (time) {
+        let year = time.getFullYear()
+        let month = time.getMonth() + 1
+        let date = time.getDate()
+        let created = year + '.' + month + '.' + date
+        return created
+      },
+      // 发表评论
+      publishComment () {
+        this.$http.post('/api/comment', {id: this.id, content: this.commentContent})
+          .then(res => {
+            if (res.data.state === '1') {
+              this.$message({
+                message: res.data.msg,
+                type: 'success'
+              })
+              let time = new Date()
+              let created = this.timeFormat(time)
+              this.commentItems.push({name: this.name, headUrl: this.headUrl, commentContent: this.commentContent, created_at: created})
+              this.commentContent = ''
+            } else {
+              this.$message({
+                message: res.data.msg,
+                type: 'warning'
+              })
+              this.$router.push({path: '/login'})
+            }
+          })
+          .catch(res => {
+            this.$message({
+              message: res.data.msg,
+              type: 'error'
+            })
+          })
+      }
     }
   }
 </script>
@@ -245,7 +274,7 @@
         margin-top: 20px;
         position: relative;
         border-bottom: 1px dashed $theme-color;
-        padding-bottom: 20px;
+        padding-bottom: 10px;
         img {
           box-sizing: border-box;
           position: absolute;
@@ -261,11 +290,15 @@
           margin-left: 100px;
           .commdity-comment-user {
             margin-bottom: 10px;
+            padding-top: 10px;
+          }
+          .commodity-time {
+            text-align: right;
           }
         }
       }
       .commdity-comment-self {
-        margin-top: 60px;
+        margin-top: 40px;
         position: relative;
         padding-bottom: 20px;
         img {

@@ -7,6 +7,7 @@ const fs = require('fs')
 
 const Commodity = require('../models/commodity')
 const User = require('../models/user')
+const Comment = require('../models/comment')
 
 const router = express.Router();
 
@@ -202,6 +203,47 @@ router.get('/personCommodity', (req, res) => {
     })
     .catch(err => {
       res.json({state: '0', msg: '获取商品失败，请稍后重试'})
+    })
+})
+
+// 对商品发布评论
+router.post('/comment', (req, res) => {
+  if (req.session.user) {
+    var option = {
+      commodityID: req.body.id,
+      name: req.session.user.name,
+      headUrl: req.session.user.headUrl,
+      content: req.body.content
+    }
+    Comment.create(option, (err, Comment) => {
+      if (err) {
+        res.json({state: '0', msg: err})
+      } else {
+        res.json({state: '1', msg: '发表评论成功'})
+      }
+    })
+  } else {
+    res.json({state: '0', msg: '登录之后才能发表评论', url: '/login'})
+  }
+})
+
+// 获取商品的评论列表
+router.post('/commentList', (req, res) => {
+  Comment.find({commodityID: req.body.id})
+    .then(comment => {
+      var commentItems = []
+      comment.forEach(item => {
+        commentItems.push({
+          name: item.name,
+          headUrl: item.headUrl,
+          commentContent: item.content,
+          created_at: item.created_at
+        })
+      })
+      res.json({state: '1', commentItems: commentItems})
+    })
+    .catch(err => {
+      res.json({state: '0', msg: '获取评论失败'})
     })
 })
 
