@@ -2,26 +2,39 @@
 
 > A Vue.js project
 
-## Build Setup
+## 主要使用到
 
-``` bash
-# install dependencies
+* vue
+* vue-router
+* vuex
+* sass
+* axios
+* express
+* mongodb
+* mongoose
+
+## 启动项目步骤
+
+1.安装项目依赖
+
+```
 npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+2.开启mongodb数据库（mongodb安装在E盘，数据库在E:\data，此命令在E盘根路径执行）
+
+```
+mongod --dbpath=E:\data
+```
+
+3.启动后端，连接数据库
+
+```
+nodemon app.js
+```
+
+4.启动vue前端界面，浏览器中打开localhost:8080
+
+```
+npm run dev
+```
