@@ -117,7 +117,7 @@
       margin-top: 35px;
       .owner-div {
         height: 52px;
-        margin-left: 20px;
+        // margin-left: 20px;
         img {
           height: 46px;
           width: 46px;
@@ -143,7 +143,7 @@
           width: 100px;
           border: 1px solid white;
           text-indent: 0;
-          margin-left: 30px;
+          margin-left: 10px;
           cursor: pointer;
           &:hover {
            border: 1px solid rgb(100, 203, 177);
